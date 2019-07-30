@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -30,90 +29,38 @@ class Home extends StatelessWidget {
         backgroundColor: new Color(0xFF2979FF),
         centerTitle: true,
       ),
-      body: HomeContent()
+      body: CustomPaint(
+  painter: Sky(),
+  child: Center(
+    
+  ),
+)
     );
   }
 }
 
-class HomeComponent extends StatefulWidget{
 
-  @override
-  _HomeComponentState createState() {
-    // TODO: implement createState
-    return _HomeComponentState();
-  }
-}
-
-class _HomeComponentState extends State<HomeComponent>{
-  double  percentage;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    percentage  = 0.0;
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Center(
-      child: Container(
-        width: 200.0,
-        height: 200.0,
-        child: CustomPaint(
-          foregroundPainter: MyPainter(),
-        ),
-      ),
-    );
-  }
-}
-
-class MyPainter extends CustomPainter{
-
-  Color lineColor;
-  Color completeColor;
-  double completePercentage;
-  double width;
-
-  MyPainter( 
-    {
-      this.lineColor,
-      this.completeColor,
-      this.completePercentage,
-      this.width
-    }
-  );
+class Sky extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint line  = Paint()
-    ..color = lineColor
-    ..strokeCap = StrokeCap.round
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = width;
-
-    Paint complete  = Paint()
-    ..color = completeColor
-    ..strokeCap = StrokeCap.round
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = width;
-
-    Offset center = Offset(size.width/2, size.height/2);
-    double radius = min(size.width/2, size.height/2);
-    canvas.drawCircle(center, radius, line);
-
-    double arcAngle = 2*pi*(completePercentage/100);
-    canvas.drawArc(Rect.fromCircle( center: center,radius: radius), - pi/2, arcAngle, false, complete);
-
-   
+    // TODO: implement paint
+    final radius = min(size.width, size.height)/3;
+    final center = Offset(size.width/2, size.height/2);
+    // Draw the body
+    final paint = Paint()..color= Colors.orange[300];
+    canvas.drawCircle(center, radius, paint);
+    // Draw the mouth
+    final smilePaint = Paint()..style = PaintingStyle.stroke..strokeWidth = 20
+    ..strokeCap=StrokeCap.round;
+    canvas.drawArc(Rect.fromCircle(center:center, radius: radius/2), 0, pi/1.5, false, smilePaint);
+    // Draw the eyes
+    canvas.drawCircle(Offset(center.dx-radius /2.8, center.dy-radius/3), 20, Paint());
+    canvas.drawCircle(Offset(center.dx+radius /2.8, center.dy-radius/3), 20, Paint());
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
-    return true;
-  }
-
+  bool shouldRepaint(Sky oldDelegate) => false;
+  @override
+  bool shouldRebuildSemantics(Sky oldDelegate) => false;
 }
